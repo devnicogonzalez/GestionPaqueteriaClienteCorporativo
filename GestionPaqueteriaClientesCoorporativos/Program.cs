@@ -1,0 +1,20 @@
+﻿using System.Globalization;
+using GestionPaqueteriaClientesCoorporativos;
+using GestionPaqueteriaClientesCoorporativos.Helpers;
+
+LeerArchivo.Iniciar();
+CultureInfo.CurrentCulture = new CultureInfo("es-MX", true);
+int cliente;
+do
+{
+    Console.Write("Ingrese su número de cliente : ");
+    int ingreso = Validaciones.PedirInt(1, 100000000);
+    cliente = IngresoCliente.Cargar(ingreso);
+
+} while (cliente == 0 || cliente == -1 );
+
+
+ Menu.Mostrar(cliente);
+
+
+//Grabar archivos
