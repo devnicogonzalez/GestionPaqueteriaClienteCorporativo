@@ -9,7 +9,7 @@ namespace GestionPaqueteriaClientesCoorporativos.Datos
 
         int Region;
         int DivisionAdministrativa;
-        Decimal Peso;
+        decimal Peso;
         Double Precio;
 
         public Tarifario(string linea)

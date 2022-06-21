@@ -27,23 +27,24 @@ namespace GestionPaqueteriaClientesCoorporativos
                 Console.WriteLine("Ingrese el peso de la correspondencia, hasta 30kg");
                 decimal kilogramo = Validaciones.PedirDecimal(0, 30);
                 OrdenServicio.Peso = kilogramo;
+                
 
-                if (OrdenServicio.Peso <= (decimal)Tarifario.ObtenerLimitesDePeso.OpcionHasta10kG)
+                if (OrdenServicio.Peso >= 0 && OrdenServicio.Peso <= (decimal)0.500)
+                {
+                    pesoAuxiliar = (decimal)Tarifario.ObtenerLimitesDePeso.OpcionHasta500GR;
+                }
+
+                if (OrdenServicio.Peso >= (decimal)0.500 && OrdenServicio.Peso <= (decimal)Tarifario.ObtenerLimitesDePeso.OpcionHasta10kG)
                 {
                     pesoAuxiliar = (decimal)Tarifario.ObtenerLimitesDePeso.OpcionHasta10kG;
                 }
 
-                if (OrdenServicio.Peso is (decimal)Tarifario.ObtenerLimitesDePeso.OpcionHasta10kG or <= (decimal)Tarifario.ObtenerLimitesDePeso.OpcionHasta10kG)
-                {
-                    pesoAuxiliar = (decimal)Tarifario.ObtenerLimitesDePeso.OpcionHasta10kG;
-                }
-
-                if (OrdenServicio.Peso is (decimal)Tarifario.ObtenerLimitesDePeso.OpcionHasta20kg or <= (decimal)Tarifario.ObtenerLimitesDePeso.OpcionHasta20kg)
+                if (OrdenServicio.Peso >= (decimal)Tarifario.ObtenerLimitesDePeso.OpcionHasta20kg && OrdenServicio.Peso <= (decimal)Tarifario.ObtenerLimitesDePeso.OpcionHasta20kg)
                 {
                     pesoAuxiliar = (decimal)Tarifario.ObtenerLimitesDePeso.OpcionHasta20kg;
                 }
 
-                if (OrdenServicio.Peso is (decimal)Tarifario.ObtenerLimitesDePeso.OpcionHasta30kg or <= (decimal)Tarifario.ObtenerLimitesDePeso.OpcionHasta30kg)
+                if (OrdenServicio.Peso >= (decimal)Tarifario.ObtenerLimitesDePeso.OpcionHasta30kg && OrdenServicio.Peso <= (decimal)Tarifario.ObtenerLimitesDePeso.OpcionHasta30kg)
                 {
                     pesoAuxiliar = (decimal)Tarifario.ObtenerLimitesDePeso.OpcionHasta30kg;
                 }
