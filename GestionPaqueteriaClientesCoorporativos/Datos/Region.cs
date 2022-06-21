@@ -23,10 +23,6 @@ namespace GestionPaqueteriaClientesCoorporativos.Datos
 
         public enum regionNombre
         {
-            Sur = 1,
-            Centro = 2,
-            Norte =3,
-            Metropolitana = 4,
             America_Norte = 5,
             Europa = 6,
             Asia = 7,

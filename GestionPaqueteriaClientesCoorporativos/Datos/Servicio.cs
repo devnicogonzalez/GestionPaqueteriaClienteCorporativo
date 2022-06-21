@@ -32,12 +32,9 @@ namespace GestionPaqueteriaClientesCoorporativos.Datos
         public DateTime FechaIngreso;
         public int RegionOrigen { get; set; }
         public int RegionDestino { get; set; }
+        public string LocalidadOrigen { get; set; }
+        public string LocalidadDestino { get; set; }
 
-        public enum Servicios
-        {
-            CORRESPONDENCIA = 1,
-            ENCOMIENDA = 2
-        }
 
         /*1. Sur (sede Viedma),
 
@@ -46,17 +43,13 @@ namespace GestionPaqueteriaClientesCoorporativos.Datos
 3. Norte(sede Resistencia),
 
 4. Metropolitana(Provincia de Buenos Aires y CABA – sede CABA).*/
-        public enum region
+        public enum LugarDeServicio
         {
             LOCAL = 1,
             PROVINCIAL = 2,
-            LIMITROFE = 3,
-            REGIONAL = 4,
-            AMERICA_DEL_NORTE = 5,
-            EUROPA = 6,
-            ASIA = 7,
-            OTRO = 9
-
+            REGIONAL = 3,
+            INTER_REGIONAL= 4,
+            INTERNACIONAL = 5,
         }
 
         public enum Estados
@@ -111,7 +104,7 @@ namespace GestionPaqueteriaClientesCoorporativos.Datos
         {
             //return FechaIngreso +"- "+ (Estados)Estado + " - "+(Servicios)TipoServicio+" - "+(Lugar)LugarServicio+ " - " + Peso+ "KG" + " - " + PaisDestino + " - " + Urgente + " - " + RetiroPuerta + " - "+ EntregaPuerta  + " - $" + SubTotal;
 
-            return String.Format("| {13,2} | {0,11} | {1,23} | {2,15} | {3,8} | {4,20} | {5,20} | {6,4} | {7,20} | {8,20} | {9,15} | {10,8} | {11,8} | {12,8}", FechaIngreso.ToString("dd/MM/yyyy "), (Estados)Estado, (Servicios)TipoServicio, Peso + "KG", Truncate(Remitente, 20), Truncate(DomicilioRemitente, 20), PaisDestino, Truncate(Destinatario, 20), Truncate(DomicilioDestinatario, 20), ProvinciaDestino, Urgente, RetiroPuerta, EntregaPuerta, Id);
+            return String.Format("| {13,2} | {0,11} | {1,23} | {2,15} | {3,8} | {4,20} | {5,20} | {6,4} | {7,20} | {8,20} | {9,15} | {10,8} | {11,8} | {12,8}", FechaIngreso.ToString("dd/MM/yyyy "), (Estados)Estado, (LugarDeServicio)TipoServicio, Peso + "KG", Truncate(Remitente, 20), Truncate(DomicilioRemitente, 20), PaisDestino, Truncate(Destinatario, 20), Truncate(DomicilioDestinatario, 20), ProvinciaDestino, Urgente, RetiroPuerta, EntregaPuerta, Id);
 
         }
 

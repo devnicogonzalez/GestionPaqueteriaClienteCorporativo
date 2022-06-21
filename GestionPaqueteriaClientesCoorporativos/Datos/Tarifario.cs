@@ -33,17 +33,13 @@ namespace GestionPaqueteriaClientesCoorporativos.Datos
             ENCOMIENDA = 2,
         }
 
-        public enum region
+        public enum regionNombre
         {
-            LOCAL = 1,
-            PROVINCIAL = 2,
-            LIMITROFE = 3,
-            REGIONAL = 4,
-            AMERICA_DEL_NORTE = 5,
-            EUROPA = 6,
-            ASIA = 7,
-            OTRO = 9
-
+            America_Norte = 5,
+            Europa = 6,
+            Asia = 7,
+            Otro = 8,
+            Limitrofe = 9
         }
 
         public enum ObtenerDivisionesAdministrativas
@@ -73,11 +69,45 @@ namespace GestionPaqueteriaClientesCoorporativos.Datos
             DEVUELTO_A_ORIGEN = 6
         }
 
-        public static Double Tarifar(int Region, int Division, decimal Peso)
+        public static Double Tarifar(int Division, decimal Peso)
         {
             foreach (Tarifario T in Lista)
             {
-                if(T.Peso == Peso && T.Region == Region && T.DivisionAdministrativa == Division)
+                if(T.Peso == Peso && T.DivisionAdministrativa == Division)
+                {
+                    return T.Precio;
+                }
+
+            }
+            return 0;
+
+        }
+
+        public static Double TarifarInternacional(int Region, decimal Peso)
+        {
+            foreach (Tarifario T in Lista)
+            {
+                if (T.Peso == Peso && T.Region == (int)regionNombre.America_Norte)
+                {
+                    return T.Precio;
+                }
+
+                if (T.Peso == Peso && T.Region == (int)regionNombre.Asia)
+                {
+                    return T.Precio;
+                }
+
+                if (T.Peso == Peso && T.Region == (int)regionNombre.Europa)
+                {
+                    return T.Precio;
+                }
+
+                if (T.Peso == Peso && T.Region == (int)regionNombre.Otro)
+                {
+                    return T.Precio;
+                }
+
+                if (T.Peso == Peso && T.Region == (int)regionNombre.Limitrofe)
                 {
                     return T.Precio;
                 }

@@ -24,69 +24,195 @@ namespace GestionPaqueteriaClientesCoorporativos
                 Servicio OrdenServicio = new Servicio(EstadoServicio.Servicios.Count + numeroServicio);
                 OrdenServicio.NumeroCliente = cliente;
 
-                Console.WriteLine("Seleccione la opción: 1- Enviar Correspondencia 2- Enviar Encomienda");
-                Console.WriteLine("1- Enviar Correspondencia ");
-                Console.WriteLine("2- Enviar Encomienda");
-                OrdenServicio.TipoServicio = Validaciones.PedirInt(1, 2);
+                Console.WriteLine("Ingrese el peso de la correspondencia, hasta 30kg");
+                decimal kilogramo = Validaciones.PedirDecimal(0, 30);
+                OrdenServicio.Peso = kilogramo;
 
-                /*
-                 * OpcionHasta500GR = 500,
-                   OpcionHasta10kG = 10,
-                   OpcionHasta20kg = 20,
-                   OpcionHasta30kg = 30
-                */
-                if (OrdenServicio.TipoServicio == 1)
+                if (OrdenServicio.Peso <= (decimal)Tarifario.ObtenerLimitesDePeso.OpcionHasta10kG)
                 {
-                    Console.WriteLine("Ingrese el peso de la correspondencia, hasta 500g");
-                    decimal gramo = Validaciones.PedirDecimal(1, 500);
-                    decimal kilogramo = gramo / 1000;
-
-
-
-
-                    OrdenServicio.Peso = kilogramo;
-                    OrdenServicio.RetiroPuerta = "S";
-                    OrdenServicio.EntregaPuerta = "S";
+                    pesoAuxiliar = (decimal)Tarifario.ObtenerLimitesDePeso.OpcionHasta10kG;
                 }
 
-                if (OrdenServicio.TipoServicio == 2)
+                if (OrdenServicio.Peso is (decimal)Tarifario.ObtenerLimitesDePeso.OpcionHasta10kG or <= (decimal)Tarifario.ObtenerLimitesDePeso.OpcionHasta10kG)
                 {
-                    Console.WriteLine("Ingrese el peso de la correspondencia, hasta 30kg");
-                    decimal kilogramo = Validaciones.PedirDecimal(1, 30);
-                    OrdenServicio.Peso = kilogramo;
-
-                    if (OrdenServicio.Peso <= (decimal)Tarifario.ObtenerLimitesDePeso.OpcionHasta10kG)
-                    {
-                        pesoAuxiliar = (decimal)Tarifario.ObtenerLimitesDePeso.OpcionHasta10kG;
-                    }
-
-                    if (OrdenServicio.Peso is (decimal)Tarifario.ObtenerLimitesDePeso.OpcionHasta10kG or <= (decimal)Tarifario.ObtenerLimitesDePeso.OpcionHasta10kG)
-                    {
-                        pesoAuxiliar = (decimal)Tarifario.ObtenerLimitesDePeso.OpcionHasta10kG;
-                    }
-
-                    if (OrdenServicio.Peso is (decimal)Tarifario.ObtenerLimitesDePeso.OpcionHasta20kg or <= (decimal)Tarifario.ObtenerLimitesDePeso.OpcionHasta20kg)
-                    {
-                        pesoAuxiliar = (decimal)Tarifario.ObtenerLimitesDePeso.OpcionHasta20kg;
-                    }
-
-
-                    if (OrdenServicio.Peso is (decimal)Tarifario.ObtenerLimitesDePeso.OpcionHasta30kg or <= (decimal)Tarifario.ObtenerLimitesDePeso.OpcionHasta30kg)
-                    {
-                        pesoAuxiliar = (decimal)Tarifario.ObtenerLimitesDePeso.OpcionHasta30kg;
-                    }
+                    pesoAuxiliar = (decimal)Tarifario.ObtenerLimitesDePeso.OpcionHasta10kG;
                 }
+
+                if (OrdenServicio.Peso is (decimal)Tarifario.ObtenerLimitesDePeso.OpcionHasta20kg or <= (decimal)Tarifario.ObtenerLimitesDePeso.OpcionHasta20kg)
+                {
+                    pesoAuxiliar = (decimal)Tarifario.ObtenerLimitesDePeso.OpcionHasta20kg;
+                }
+
+                if (OrdenServicio.Peso is (decimal)Tarifario.ObtenerLimitesDePeso.OpcionHasta30kg or <= (decimal)Tarifario.ObtenerLimitesDePeso.OpcionHasta30kg)
+                {
+                    pesoAuxiliar = (decimal)Tarifario.ObtenerLimitesDePeso.OpcionHasta30kg;
+                }
+
 
                 Console.WriteLine("Seleccione la Provincia o Distrito Federal, desde donde enviara la correspondencia");
 
-                foreach (var item in Localidad.localidades)
+                foreach (var item in Provincia.Provincias)
                 {
                     Console.WriteLine($"{item.Key}) {item.Value.Nombre}");
                 }
 
-                int localidadId = Validaciones.PedirInt(1, 24);
-                OrdenServicio.ProvinciaOrigen = Localidad.localidades[localidadId].Nombre;
-                OrdenServicio.RegionOrigen = Localidad.localidades[localidadId].Region;
+                int NumeroProvincia = Validaciones.PedirInt(1, 24);
+                OrdenServicio.ProvinciaOrigen = Provincia.Provincias[NumeroProvincia].Nombre;
+                OrdenServicio.RegionOrigen = Provincia.Provincias[NumeroProvincia].Region;
+
+
+
+                Console.WriteLine("Seleccione la Localidad, desde donde enviará la correspondencia");
+
+                    int i = 1;
+                    var dictLoc = Localidad.localidades.ToDictionary(A => i++, A => A);
+
+                    foreach (var v in dictLoc)
+                    {
+                        if(v.Value.NumeroProvincia == NumeroProvincia) { 
+                            Console.WriteLine(v.Key + "   " + v.Value.Nombre);
+                        }
+                    }
+                int NumeroLocalidad;
+                do
+                {
+                    NumeroLocalidad = Validaciones.PedirInt(1, dictLoc.Count);
+
+                    if (dictLoc[NumeroLocalidad].NumeroProvincia == NumeroProvincia)
+                    {
+                        OrdenServicio.LocalidadOrigen = Localidad.localidades[NumeroLocalidad].Nombre;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Debe seleccionar una localidad del listado");
+                    }
+
+                } while (dictLoc[NumeroLocalidad].NumeroProvincia != NumeroProvincia);
+
+
+
+
+                bool existePais = false;
+                int intentos = 0;
+                do
+                {
+                    Console.WriteLine("Ingrese el país de destino");
+                    string ingresoPaisDestino = Validaciones.PedirStrNoVacSinRest();
+
+                    existePais = Pais.paises.TryGetValue(ingresoPaisDestino, out Pais PaisSeleccionado);
+
+                    if (existePais)
+                    {
+                        OrdenServicio.PaisDestino = PaisSeleccionado.NombreISO;
+                      //  OrdenServicio.RegionDestino = PaisSeleccionado.Region;
+
+                    }
+                    else
+                    {
+                        Console.WriteLine($" '{ingresoPaisDestino}' , no es un país válido.");
+                        OrdenServicio.PaisDestino = "NULL";
+                        OrdenServicio.ProvinciaDestino = "NULL";
+                        intentos++;
+                    }
+                    //PROVISORIO DESPUES QUE POR 4 VECES NO ENCONTRARON PAIS DEJO SEGUIR CON CAMPOS EN NULL
+                    if (intentos == 5)
+                        existePais = true;
+
+                } while (!existePais);
+
+                if(OrdenServicio.PaisDestino == "AR") {
+                    Console.WriteLine("Seleccione la Provincia o Distrito Federal donde enviará la correspondencia");
+                    foreach (var item in Provincia.Provincias)
+                    {
+                        Console.WriteLine($"{item.Key}) {item.Value.Nombre}");
+                    }
+                    int provinciaDestino = Validaciones.PedirInt(1, 24);
+                    OrdenServicio.ProvinciaDestino = Provincia.Provincias[provinciaDestino].Nombre;
+                    OrdenServicio.RegionDestino = Provincia.Provincias[provinciaDestino].Region;
+
+
+                    Console.WriteLine("Seleccione la Localidad, donde enviará la correspondencia");
+                    foreach (var v in dictLoc)
+                    {
+                        if (v.Value.NumeroProvincia == provinciaDestino)
+                        {
+                            Console.WriteLine(v.Key + "   " + v.Value.Nombre);
+                        }
+                    }
+
+                    int NumeroLocalidadDestino;
+                    do
+                    {
+                        NumeroLocalidadDestino = Validaciones.PedirInt(1, dictLoc.Count);
+
+                        if (dictLoc[NumeroLocalidadDestino].NumeroProvincia == provinciaDestino)
+                        {
+                            OrdenServicio.LocalidadDestino = Localidad.localidades[NumeroLocalidadDestino].Nombre;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Debe seleccionar una localidad del listado");
+                        }
+
+                    } while (dictLoc[NumeroLocalidadDestino].NumeroProvincia != provinciaDestino);
+
+
+                    if (OrdenServicio.LocalidadOrigen == OrdenServicio.LocalidadDestino)
+                    {
+                        OrdenServicio.LugarServicio = (int)Servicio.LugarDeServicio.LOCAL;
+                    }
+
+                    if (OrdenServicio.ProvinciaDestino == OrdenServicio.ProvinciaOrigen)
+                    {
+                        OrdenServicio.LugarServicio = (int)Servicio.LugarDeServicio.PROVINCIAL; ;
+                    }
+
+                    if (OrdenServicio.RegionOrigen == OrdenServicio.RegionDestino)
+                    {
+                        OrdenServicio.LugarServicio = (int)Servicio.LugarDeServicio.REGIONAL; 
+                    }
+
+                    if (OrdenServicio.RegionOrigen != OrdenServicio.RegionDestino)
+                    {
+                        OrdenServicio.LugarServicio = (int)Servicio.LugarDeServicio.INTER_REGIONAL;
+                    }
+
+                }
+                else
+                {
+                    OrdenServicio.LugarServicio = (int)Servicio.LugarDeServicio.INTERNACIONAL;
+                        Console.WriteLine("Seleccione Region");
+                        Console.WriteLine("1.Países limítrofes");
+                        Console.WriteLine("2.Resto de América Latina");
+                        Console.WriteLine("3.América del Norte");
+                        Console.WriteLine("4.Europa");
+                        Console.WriteLine("5.Asia");
+                        Console.WriteLine("6.Otro");
+                        int lugServicion = Validaciones.PedirInt(1, 5);
+
+                        switch (lugServicion)
+                        {
+                            case 1:
+                                OrdenServicio.RegionDestino = (int)Region.regionNombre.Limitrofe;
+                                break;
+                            case 2:
+                                OrdenServicio.RegionDestino = (int)Region.regionNombre.America_Norte;
+                                break;
+                            case 3:
+                                OrdenServicio.RegionDestino = (int)Region.regionNombre.Europa;
+                                break;
+                            case 4:
+                                OrdenServicio.RegionDestino = (int)Region.regionNombre.Asia;
+                                break;
+                            case 5:
+                                OrdenServicio.RegionDestino = (int)Region.regionNombre.Otro;
+                                Console.WriteLine("Los destinos fuera de esta clasificación son negociados directamente por la gerencia de Productos y Marketing, por lo que no cuentan con un cuadro tarifario específico.");
+                                break;
+                            default:
+                                Console.WriteLine("Operación inválida.");
+                                break;
+                        }
+                    }
 
                 Console.WriteLine("Ingrese el remitente:");
                 OrdenServicio.Remitente = Validaciones.PedirStrNoVac();
@@ -100,111 +226,13 @@ namespace GestionPaqueteriaClientesCoorporativos
                 Console.WriteLine("Ingrese el domicilio de entrega");
                 OrdenServicio.DomicilioDestinatario = Validaciones.PedirStrNoVac();
 
-                Console.WriteLine("Seleccione el lugar para el servicio");
-                Console.WriteLine("1. Local");
-                Console.WriteLine("2. Provincial");
-                Console.WriteLine("3. Internacional");
-                OrdenServicio.LugarServicio = Validaciones.PedirInt(1, 3);
-
-
-                if (OrdenServicio.LugarServicio == 1)
-                {
-                    OrdenServicio.PaisDestino = "ARG";
-                    OrdenServicio.ProvinciaDestino = OrdenServicio.ProvinciaOrigen;
-                }
-
-
-                if (OrdenServicio.LugarServicio == 2)
-                {
-
-                    Console.WriteLine("Seleccione la Provincia o Distrito Federal donde enviará la correspondencia");
-                    foreach (var item in Localidad.localidades)
-                    {
-                        Console.WriteLine($"{item.Key}) {item.Value.Nombre}");
-                    }
-                    OrdenServicio.ProvinciaDestino = Localidad.localidades[Validaciones.PedirInt(1, 24)].Nombre;
-                    OrdenServicio.PaisDestino = "ARG";
-
-                }
-
-
-
-                if (OrdenServicio.LugarServicio == 3)
-                {
-                    Console.WriteLine("Seleccione Region");
-                    Console.WriteLine("1.Países limítrofes");
-                    Console.WriteLine("2.Resto de América Latina");
-                    Console.WriteLine("3.América del Norte");
-                    Console.WriteLine("4.Europa");
-                    Console.WriteLine("5.Asia");
-                    Console.WriteLine("6.Otro");
-                    int lugServicion = Validaciones.PedirInt(1, 5);
-
-                    switch (lugServicion)
-                    {
-                        case 1:
-                            OrdenServicio.LugarServicio = (int)Region.regionNombre.Limitrofe;
-                            break;
-                        case 2:
-                            OrdenServicio.LugarServicio = (int)Region.regionNombre.America_Norte;
-                            break;
-                        case 3:
-                            OrdenServicio.LugarServicio = (int)Region.regionNombre.Europa;
-                            break;
-                        case 4:
-                            OrdenServicio.LugarServicio = (int)Region.regionNombre.Asia;
-                            break;
-                        case 5:
-                            OrdenServicio.LugarServicio = (int)Region.regionNombre.Otro;
-                            Console.WriteLine("Los destinos fuera de esta clasificación son negociados directamente por la gerencia de Productos y Marketing, por lo que no cuentan con un cuadro tarifario específico.");
-                            break;
-                        default:
-                            Console.WriteLine("Operación inválida.");
-                            break;
-                    }
-
-
-                    bool existePais = false;
-                    int intentos = 0;
-                    do
-                    {
-                        Console.WriteLine("Ingrese el país de destino");
-                        string ingresoPaisDestino = Validaciones.PedirStrNoVacSinRest();
-
-                        existePais = Pais.paises.TryGetValue(ingresoPaisDestino, out Pais PaisSeleccionado);
-
-                        if (existePais)
-                        {
-                            OrdenServicio.PaisDestino = PaisSeleccionado.NombreISO;
-                            OrdenServicio.ProvinciaDestino = PaisSeleccionado.NombreISO;
-                          //  OrdenServicio.RegionDestino = PaisSeleccionado.Region;
-
-                        }
-                        else
-                        {
-                            Console.WriteLine($" '{ingresoPaisDestino}' , no es un país válido.");
-                            OrdenServicio.PaisDestino = "NULL";
-                            OrdenServicio.ProvinciaDestino = "NULL";
-                            intentos++;
-                        }
-                        //PROVISORIO DESPUES QUE POR 4 VECES NO ENCONTRARON PAIS DEJO SEGUIR CON CAMPOS EN NULL
-                        if (intentos == 5)
-                            existePais = true;
-
-                    } while (!existePais);
-
-
-
-                }
-
 
 
 
                 Console.WriteLine("Desea el servicio adicional de Urgente (entrega dentro de las 48 hs) tiene un recargo de un 40% hasta con un tope de 1000 pesos. Ingrese “S” para si o “N” para No.");
                 OrdenServicio.Urgente = Validaciones.PedirSoN();
 
-                if (OrdenServicio.TipoServicio == 2)
-                {
+      
 
                     Console.WriteLine("Desea el servicio adicional de “Retiro en Puerta” (se cobra un adicional de $ 500 por bulto). Ingrese “S” para si o “N” para No.");
                     OrdenServicio.RetiroPuerta = Validaciones.PedirSoN();
@@ -212,7 +240,7 @@ namespace GestionPaqueteriaClientesCoorporativos
                     Console.WriteLine("Desea el servicio adicional de “Entrega en Puerta” (se cobra un adicional de $ 500 por bulto). Ingrese “S” para si o “N” para No.");
                     OrdenServicio.EntregaPuerta = Validaciones.PedirSoN();
 
-                }
+
 
                 /*TEST
                 OrdenServicio.TipoServicio = 2;
@@ -236,11 +264,36 @@ namespace GestionPaqueteriaClientesCoorporativos
 
 
 
+                Double precio;
+                int lugarServicio=0;
+                if (OrdenServicio.LugarServicio > 4) {
+                    if (OrdenServicio.LocalidadOrigen == Localidad.localidades[1].Nombre)
+                    {
+                         lugarServicio = (int)Servicio.LugarDeServicio.LOCAL;
+                    }
+                    if (Provincia.Provincias[1].Nombre == OrdenServicio.ProvinciaOrigen)
+                    {
+                        lugarServicio = (int)Servicio.LugarDeServicio.PROVINCIAL;
+                    }
+                    if (OrdenServicio.RegionOrigen == Provincia.Provincias[1].Region)
+                    {
+                        lugarServicio = (int)Servicio.LugarDeServicio.REGIONAL;
+                    }
+                    if (OrdenServicio.RegionOrigen != Provincia.Provincias[1].Region)
+                    {
+                        lugarServicio = (int)Servicio.LugarDeServicio.INTER_REGIONAL;
+                    }
+                    Double precioACaba = Tarifario.Tarifar(lugarServicio, pesoAuxiliar);
+                    Double precioInternacional = Tarifario.TarifarInternacional(OrdenServicio.RegionDestino, pesoAuxiliar);
+                    Double precioCompleto = precioACaba + precioInternacional;
+                    precio = precioCompleto;
+                }
+                else
+                {
+                    precio = Tarifario.Tarifar(OrdenServicio.LugarServicio, pesoAuxiliar);
+                    OrdenServicio.SubTotal = precio;
+                }
 
-
-                //envios nacionales falta internacionales
-                Double precio = Tarifario.Tarifar(OrdenServicio.RegionOrigen, OrdenServicio.LugarServicio, pesoAuxiliar);
-                OrdenServicio.SubTotal = precio;
 
 
                 Console.WriteLine($"El precio del envio es: ${precio}");

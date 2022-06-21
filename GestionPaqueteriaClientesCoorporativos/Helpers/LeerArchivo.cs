@@ -84,6 +84,32 @@ namespace GestionPaqueteriaClientesCoorporativos.Helpers
             Console.WriteLine("Cargando Localidades");
 
 
+            if (File.Exists("Provincias.txt"))
+            {
+                using (var reader = new StreamReader("Provincias.txt"))
+                {
+                    var numeroLinea = 0;
+                    int count;
+
+                    while (!reader.EndOfStream)
+                    {
+                        var linea = reader.ReadLine();
+                        var partes = linea.Split(';');
+                        Provincia.Provincias.Add(int.Parse(partes[0]), new Provincia(linea));
+                        numeroLinea++;
+                        Console.Write(".");
+
+                    }
+                    Console.WriteLine("");
+
+                }
+            }
+            else
+            {
+                Console.WriteLine("No hay archivo de Provincias.");
+            }
+
+
             if (File.Exists("Localidades.txt"))
             {
                 using (var reader = new StreamReader("Localidades.txt"))
@@ -93,7 +119,7 @@ namespace GestionPaqueteriaClientesCoorporativos.Helpers
                     {
                         var linea = reader.ReadLine();
                         var partes = linea.Split(';');
-                        Localidad.localidades.Add(int.Parse(partes[0]), new Localidad(linea));
+                        Localidad.localidades.Add(new Localidad(linea));
                         numeroLinea++;
                         Console.Write(".");
 
