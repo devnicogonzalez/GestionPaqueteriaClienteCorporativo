@@ -34,21 +34,25 @@ namespace GestionPaqueteriaClientesCoorporativos
                     pesoAuxiliar = (decimal)Tarifario.ObtenerLimitesDePeso.OpcionHasta500GR;
                 }
 
-                if (OrdenServicio.Peso >= (decimal)0.500 && OrdenServicio.Peso <= (decimal)Tarifario.ObtenerLimitesDePeso.OpcionHasta10kG)
+                if (OrdenServicio.Peso > (decimal)0.500 && OrdenServicio.Peso <= (decimal)Tarifario.ObtenerLimitesDePeso.OpcionHasta10kG)
                 {
                     pesoAuxiliar = (decimal)Tarifario.ObtenerLimitesDePeso.OpcionHasta10kG;
                 }
 
-                if (OrdenServicio.Peso >= (decimal)Tarifario.ObtenerLimitesDePeso.OpcionHasta20kg && OrdenServicio.Peso <= (decimal)Tarifario.ObtenerLimitesDePeso.OpcionHasta20kg)
+                if (OrdenServicio.Peso > (decimal)Tarifario.ObtenerLimitesDePeso.OpcionHasta10kG && OrdenServicio.Peso <= (decimal)Tarifario.ObtenerLimitesDePeso.OpcionHasta20kg)
                 {
                     pesoAuxiliar = (decimal)Tarifario.ObtenerLimitesDePeso.OpcionHasta20kg;
                 }
 
-                if (OrdenServicio.Peso >= (decimal)Tarifario.ObtenerLimitesDePeso.OpcionHasta30kg && OrdenServicio.Peso <= (decimal)Tarifario.ObtenerLimitesDePeso.OpcionHasta30kg)
+                if (OrdenServicio.Peso > (decimal)Tarifario.ObtenerLimitesDePeso.OpcionHasta20kg && OrdenServicio.Peso <= (decimal)Tarifario.ObtenerLimitesDePeso.OpcionHasta30kg)
                 {
                     pesoAuxiliar = (decimal)Tarifario.ObtenerLimitesDePeso.OpcionHasta30kg;
                 }
 
+                if(pesoAuxiliar == 0)
+                {
+                    Console.WriteLine($"NO FUE POSIBLE DEFINIR RANGO DE PRECIO "+ OrdenServicio.Peso);
+                }
 
                 Console.WriteLine("Seleccione la Provincia o Distrito Federal, desde donde enviara la correspondencia");
 
@@ -158,19 +162,19 @@ namespace GestionPaqueteriaClientesCoorporativos
                     } while (dictLoc[NumeroLocalidadDestino].NumeroProvincia != provinciaDestino);
 
 
-                    if (OrdenServicio.LocalidadOrigen == OrdenServicio.LocalidadDestino)
+                    if (OrdenServicio.RegionOrigen == OrdenServicio.RegionDestino)
                     {
-                        OrdenServicio.LugarServicio = (int)Servicio.LugarDeServicio.LOCAL;
+                        OrdenServicio.LugarServicio = (int)Servicio.LugarDeServicio.REGIONAL;
                     }
 
                     if (OrdenServicio.ProvinciaDestino == OrdenServicio.ProvinciaOrigen)
                     {
-                        OrdenServicio.LugarServicio = (int)Servicio.LugarDeServicio.PROVINCIAL; ;
+                        OrdenServicio.LugarServicio = (int)Servicio.LugarDeServicio.PROVINCIAL;
                     }
 
-                    if (OrdenServicio.RegionOrigen == OrdenServicio.RegionDestino)
+                    if (OrdenServicio.LocalidadOrigen == OrdenServicio.LocalidadDestino)
                     {
-                        OrdenServicio.LugarServicio = (int)Servicio.LugarDeServicio.REGIONAL; 
+                        OrdenServicio.LugarServicio = (int)Servicio.LugarDeServicio.LOCAL;
                     }
 
                     if (OrdenServicio.RegionOrigen != OrdenServicio.RegionDestino)
@@ -228,18 +232,37 @@ namespace GestionPaqueteriaClientesCoorporativos
                 OrdenServicio.DomicilioDestinatario = Validaciones.PedirStrNoVac();
 
 
+                List<int> adicionales = new List<int>();
+                foreach (ServicioAdicional SerAdic in ServicioAdicional.Lista)
+                {
+                    Console.WriteLine($"Desea el servicio adicional de "+SerAdic.Descripcion+ ".(se cobra un adicional de $ "+SerAdic.Precio+" por bulto) Ingrese “S” para si o “N” para No.");
+                    string SoN= Validaciones.PedirSoN();
+                    if(SoN == "S")
+                    {
+                        adicionales.Add(SerAdic.NumeroServicioAdicional);
+                    }
+                }
 
 
-                Console.WriteLine("Desea el servicio adicional de Urgente (entrega dentro de las 48 hs) tiene un recargo de un 40% hasta con un tope de 1000 pesos. Ingrese “S” para si o “N” para No.");
-                OrdenServicio.Urgente = Validaciones.PedirSoN();
+                double precioAdicional = ServicioAdicional.Calcular(adicionales);
 
-      
+                if (adicionales.Contains(1))
+                {
+                    OrdenServicio.Urgente = "S";
+                }
 
-                    Console.WriteLine("Desea el servicio adicional de “Retiro en Puerta” (se cobra un adicional de $ 500 por bulto). Ingrese “S” para si o “N” para No.");
-                    OrdenServicio.RetiroPuerta = Validaciones.PedirSoN();
+                if (adicionales.Contains(2))
+                {
+                    OrdenServicio.RetiroPuerta = "S";
+                }
 
-                    Console.WriteLine("Desea el servicio adicional de “Entrega en Puerta” (se cobra un adicional de $ 500 por bulto). Ingrese “S” para si o “N” para No.");
-                    OrdenServicio.EntregaPuerta = Validaciones.PedirSoN();
+                if (adicionales.Contains(3))
+                {
+                    OrdenServicio.EntregaPuerta = "S";
+                }
+
+
+
 
 
 
@@ -260,7 +283,6 @@ namespace GestionPaqueteriaClientesCoorporativos
                 */
 
 
-                //             cuenta.SubTotal = OrdenServicio.ObtenerPrecio();
 
 
 
@@ -286,13 +308,13 @@ namespace GestionPaqueteriaClientesCoorporativos
                     }
                     Double precioACaba = Tarifario.Tarifar(lugarServicio, pesoAuxiliar);
                     Double precioInternacional = Tarifario.TarifarInternacional(OrdenServicio.RegionDestino, pesoAuxiliar);
-                    Double precioCompleto = precioACaba + precioInternacional;
+                    Double precioCompleto = precioACaba + precioInternacional + precioAdicional;
                     precio = precioCompleto;
                 }
                 else
                 {
                     precio = Tarifario.Tarifar(OrdenServicio.LugarServicio, pesoAuxiliar);
-                    OrdenServicio.SubTotal = precio;
+                    OrdenServicio.SubTotal = precio + precioAdicional;
                 }
 
 
@@ -306,6 +328,7 @@ namespace GestionPaqueteriaClientesCoorporativos
                 if (agregar == "S")
                 {
 
+                    cuenta.Total = OrdenServicio.SubTotal;
 
                     Servicio.serviciosLista.Add(OrdenServicio);
                     //almaceno servicio
@@ -356,7 +379,8 @@ namespace GestionPaqueteriaClientesCoorporativos
 
             }
 
-          //     Console.WriteLine("Total:$ {0} por {1} servicios", Servicio.ObtenerTotalServicio(), CuentaCorriente.OrdenesServicios.Count);
+
+                // Console.WriteLine("Total:$ {0} por {1} servicios", Servicio.ObtenerTotalServicio(), CuentaCorriente.OrdenesServicios.Count);
 
 
 

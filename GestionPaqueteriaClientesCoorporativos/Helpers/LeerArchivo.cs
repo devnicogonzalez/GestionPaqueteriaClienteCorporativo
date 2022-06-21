@@ -241,6 +241,30 @@ namespace GestionPaqueteriaClientesCoorporativos.Helpers
                 Console.WriteLine("No hay archivo de clientes.");
             }
 
+            if (File.Exists("ServiciosAdicionales.txt"))
+            {
+                using (var reader = new StreamReader("ServiciosAdicionales.txt"))
+                {
+                    var numeroLinea = 0;
+                    while (!reader.EndOfStream)
+                    {
+                        var linea = reader.ReadLine();
+                        var partes = linea.Split(';');
+                        ServicioAdicional.Lista.Add(new ServicioAdicional(linea));
+                        numeroLinea++;
+                        Console.Write(".");
+
+                    }
+                    Console.WriteLine("");
+
+                }
+
+            }
+            else
+            {
+                Console.WriteLine("No hay archivo de ServiciosAdicionales.");
+            }
+
 
         }
 
