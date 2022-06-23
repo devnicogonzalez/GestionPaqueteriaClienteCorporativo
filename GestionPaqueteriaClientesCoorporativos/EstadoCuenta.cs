@@ -14,9 +14,8 @@ namespace GestionPaqueteriaClientesCoorporativos
             Console.Clear();
             Console.WriteLine("ESTADO DE CUENTA");
             Console.WriteLine("Opciones");
-            Console.WriteLine("1. Filtrar por periodo");
             Console.WriteLine("2. Mostrar todas");
-
+            /// mostrar todas de una
             //PIDO ENTERO DE 1 A 2 
             int opcion = Validaciones.PedirInt(1, 2);
             int anio = 2022;

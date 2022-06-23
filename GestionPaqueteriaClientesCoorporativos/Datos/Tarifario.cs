@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Linq;
 
 namespace GestionPaqueteriaClientesCoorporativos.Datos
@@ -10,15 +11,16 @@ namespace GestionPaqueteriaClientesCoorporativos.Datos
         int Region;
         int DivisionAdministrativa;
         decimal Peso;
-        Double Precio;
+        double Precio;
 
         public Tarifario(string linea)
         {
+            CultureInfo.CurrentCulture = new CultureInfo("es-MX", true);
             var partes = linea.Split(';');
             Region = int.Parse(partes[0]);
             DivisionAdministrativa = int.Parse(partes[1]);
             Peso = decimal.Parse(partes[2]);
-            Precio = Double.Parse(partes[3]);
+            Precio = double.Parse(partes[3]);
 
         }
 
@@ -74,7 +76,7 @@ namespace GestionPaqueteriaClientesCoorporativos.Datos
             DEVUELTO_A_ORIGEN = 6
         }
 
-        public static Double Tarifar(int Division, decimal Peso)
+        public static double Tarifar(int Division, decimal Peso)
         {
             foreach (Tarifario T in Lista)
             {
@@ -88,7 +90,7 @@ namespace GestionPaqueteriaClientesCoorporativos.Datos
 
         }
 
-        public static Double TarifarInternacional(int Region, decimal Peso)
+        public static double TarifarInternacional(int Region, decimal Peso)
         {
             foreach (Tarifario T in Lista)
             {

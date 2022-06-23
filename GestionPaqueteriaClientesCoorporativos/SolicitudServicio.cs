@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using GestionPaqueteriaClientesCoorporativos.Datos;
 using GestionPaqueteriaClientesCoorporativos.Helpers;
 
@@ -9,6 +10,8 @@ namespace GestionPaqueteriaClientesCoorporativos
 
         public static void Crear(int cliente)
         {
+            CultureInfo.CurrentCulture = new CultureInfo("es-MX", true);
+
             Console.WriteLine("SOLICITAR UN NUEVO SERVICIO");
   
 
@@ -274,7 +277,7 @@ namespace GestionPaqueteriaClientesCoorporativos
                 double precioAdicional = ServicioAdicional.Calcular(adicionales);
 
 
-                Double precio;
+                double precio;
                 if (OrdenServicio.LugarServicio == (int)Servicio.LugarDeServicio.INTERNACIONAL) {
                     int lugarServicio = 0;
                     if (OrdenServicio.LocalidadOrigen == Localidad.localidades[0].Nombre)
@@ -353,10 +356,8 @@ namespace GestionPaqueteriaClientesCoorporativos
                 salir = Validaciones.PedirSoN();
 
             } while (salir == "S");
-            //almaceno servicio
-                     Console.Clear();
-            // MUESTRA DETALLE DE LA ULTIMAS ORDENES EN PANTALLA
-           
+
+            Console.Clear();
             Console.WriteLine("Últimas ordenes cargadas:");
 
             foreach (Servicio item in Servicio.serviciosLista)
@@ -366,13 +367,7 @@ namespace GestionPaqueteriaClientesCoorporativos
 
             }
 
-
             Console.WriteLine("Total:$ {0} por {1} servicios", CuentaCorriente.ObtenerTotalServicio(), CuentaCorriente.ListaCuentaCorriente.Count);
-
-
-
-           
-
             Console.WriteLine("Presione una tecla para volver al menu principal...");
             Console.ReadKey();
             Menu.Mostrar(cliente);
