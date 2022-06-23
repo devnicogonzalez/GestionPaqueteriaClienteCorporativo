@@ -90,7 +90,7 @@ namespace GestionPaqueteriaClientesCoorporativos
 
                    if (dictLoc[NumeroLocalidad].NumeroProvincia == NumeroProvincia)
                    {
-                       OrdenServicio.LocalidadOrigen = Localidad.localidades[NumeroLocalidad].Nombre;
+                       OrdenServicio.LocalidadOrigen = dictLoc[NumeroLocalidad].Nombre;
                    }
                    else
                    {
