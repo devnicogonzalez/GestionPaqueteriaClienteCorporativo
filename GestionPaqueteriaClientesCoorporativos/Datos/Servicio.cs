@@ -54,7 +54,7 @@ namespace GestionPaqueteriaClientesCoorporativos.Datos
             Asia=7,
             Otro=10,
             País_Limítrofe=9,
-            Restode_America_Latina=8
+            Resto_de_America_Latina=8
         }
 
         public enum Estados
@@ -133,13 +133,13 @@ namespace GestionPaqueteriaClientesCoorporativos.Datos
                 (Estados)Estado,
                 (LugarDeServicio)LugarServicio,
                 Peso + "KG",
-                Truncate(Remitente, 20),
-                Truncate(DomicilioRemitente, 20),
+                Truncate(Remitente, 50),
+                Truncate(DomicilioRemitente, 50),
                 ProvinciaOrigen,
                 (regionNombre)RegionOrigen,
-                Truncate(Destinatario, 20),
+                Truncate(Destinatario, 50),
                 PaisDestino,
-                Truncate(DomicilioDestinatario, 20),
+                Truncate(DomicilioDestinatario, 50),
                 ProvinciaDestino,
                 (regionNombre)RegionDestino,
                 Urgente,

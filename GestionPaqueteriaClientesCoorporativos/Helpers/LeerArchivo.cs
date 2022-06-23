@@ -267,6 +267,31 @@ namespace GestionPaqueteriaClientesCoorporativos.Helpers
                 Console.WriteLine("No hay archivo de ServiciosAdicionales.");
             }
 
+            /*
+            Console.WriteLine("Cargando Regiones Internacionales");
+
+            if (File.Exists("RegionesInternacionales.txt"))
+            {
+                using (var reader = new StreamReader("RegionesInternacionales.txt"))
+                {
+                    var numeroLinea = 0;
+                    while (!reader.EndOfStream)
+                    {
+                        var linea = reader.ReadLine();
+                        var partes = linea.Split(';');
+                        Region.Lista.Add(new Region(linea));
+                        numeroLinea++;
+                        Console.Write(".");
+
+                    }
+                    Console.WriteLine("");
+
+                }
+            }
+            else
+            {
+                Console.WriteLine("No hay archivo de Regiones Internacionales.");
+            }*/
 
         }
 

@@ -301,6 +301,10 @@ namespace GestionPaqueteriaClientesCoorporativos
                     double precioCompleto = precioACaba + precioInternacional + precioAdicional;
                     precio = precioCompleto;
                     OrdenServicio.SubTotal = precio;
+                    Console.WriteLine($"Precio de envio hasta CABA es: ${precioACaba}");
+                    Console.WriteLine($"Precio de envio hasta {OrdenServicio.PaisDestino} es: ${precioInternacional}");
+
+
                 }
                 else
                 {
@@ -311,7 +315,7 @@ namespace GestionPaqueteriaClientesCoorporativos
                 cuenta.Total = OrdenServicio.SubTotal;
 
 
-                Console.WriteLine($"El precio del envio es: ${OrdenServicio.SubTotal}");
+                Console.WriteLine($"El precio total del envio es: ${OrdenServicio.SubTotal}");
 
                 Console.WriteLine("¿Confirma el servicio? Debe ingresar “S” para Si o “N” para No.");
                 string agregar = Validaciones.PedirSoN();

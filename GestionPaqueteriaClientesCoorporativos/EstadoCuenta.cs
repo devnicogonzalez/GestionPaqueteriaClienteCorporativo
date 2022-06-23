@@ -12,24 +12,7 @@ namespace GestionPaqueteriaClientesCoorporativos
         public static void Mostrar(int cliente)
         {
             Console.Clear();
-            Console.WriteLine("ESTADO DE CUENTA");
-            Console.WriteLine("Opciones");
-            Console.WriteLine("2. Mostrar todas");
-            /// mostrar todas de una
-            //PIDO ENTERO DE 1 A 2 
-            int opcion = Validaciones.PedirInt(1, 2);
-            int anio = 2022;
-            int mes = 12;
-            if (opcion == 1)
-            {
-                Console.WriteLine("Ingrese el año que desea consultar");
-                anio = Validaciones.PedirInt(2000, 2022);
-                Console.WriteLine("Ingrese el mes que desea consultar");
-                mes = Validaciones.PedirInt(1, 12);
-                Console.WriteLine("El movimiento de la cuenta corriente durante el mes solicitado es:");
-            }
-            Console.Clear();
-            Console.WriteLine("ESTADO DE CUENTA");
+            Console.WriteLine("ESTADO DE CUENTA CORRIENTE");
 
             Console.WriteLine(String.Format("|{0,19} | {1,10} | {2,10} |", "Fecha de operación", "Estado", "Total"));
             double total = 0;
@@ -44,30 +27,7 @@ namespace GestionPaqueteriaClientesCoorporativos
                     foreach (CuentaCorriente cuentaCorriente in entry.Value)
                     {
 
-                        if (opcion == 1)
-                        {
-
-                            int fechaOrdenAnio = int.Parse(cuentaCorriente.FechaAlta.ToString("yyyy", CultureInfo.CreateSpecificCulture("es-MX")));
-                            int fechaOrdenMes = int.Parse(cuentaCorriente.FechaAlta.ToString("MM", CultureInfo.CreateSpecificCulture("es-MX")));
-
-                            if (fechaOrdenAnio == anio && fechaOrdenMes == mes)
-                            {
-
-
-                                if (cuentaCorriente.EstadoPago == 1)
-                                {
-                                    impagos++;
-                                    totalImpago += cuentaCorriente.Total;
-                                }
-                                Console.WriteLine(cuentaCorriente.ToString());
-                                total += cuentaCorriente.Total;
-                                count++;
-                            }
-
-                        }
-                        else
-                        {
-                            Console.WriteLine(cuentaCorriente.ToString());
+                           Console.WriteLine(cuentaCorriente.ToString());
                             if (cuentaCorriente.EstadoPago == 1)
                             {
                                 impagos++;
@@ -75,8 +35,6 @@ namespace GestionPaqueteriaClientesCoorporativos
                             }
                             total += cuentaCorriente.Total;
                             count++;
-
-                        }
                     }
                 }
 

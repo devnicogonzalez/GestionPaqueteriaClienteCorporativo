@@ -46,7 +46,7 @@ namespace GestionPaqueteriaClientesCoorporativos.Datos
             Asia = 7,
             Otro = 10,
             País_Limítrofe = 9,
-            Restode_America_Latina = 8
+            Resto_de_America_Latina = 8
         }
 
         public enum ObtenerDivisionesAdministrativas
@@ -76,11 +76,11 @@ namespace GestionPaqueteriaClientesCoorporativos.Datos
             DEVUELTO_A_ORIGEN = 6
         }
 
-        public static double Tarifar(int Division, decimal Peso)
+        public static double Tarifar(int Region, decimal Peso)
         {
             foreach (Tarifario T in Lista)
             {
-                if(T.Peso == Peso && T.DivisionAdministrativa == Division)
+                if(T.Peso == Peso && T.DivisionAdministrativa == Region)
                 {
                     return T.Precio;
                 }
@@ -90,31 +90,12 @@ namespace GestionPaqueteriaClientesCoorporativos.Datos
 
         }
 
-        public static double TarifarInternacional(int Region, decimal Peso)
+        public static double TarifarInternacional(int RegionInternacional, decimal Peso)
         {
             foreach (Tarifario T in Lista)
             {
-                if (T.Peso == Peso && T.Region == (int)regionNombre.America_del_Norte)
-                {
-                    return T.Precio;
-                }
-
-                if (T.Peso == Peso && T.Region == (int)regionNombre.Asia)
-                {
-                    return T.Precio;
-                }
-
-                if (T.Peso == Peso && T.Region == (int)regionNombre.Europa)
-                {
-                    return T.Precio;
-                }
-
-                if (T.Peso == Peso && T.Region == (int)regionNombre.Otro)
-                {
-                    return T.Precio;
-                }
-
-                if (T.Peso == Peso && T.Region == (int)regionNombre.País_Limítrofe)
+               
+                if (T.Peso == Peso && T.Region == RegionInternacional)
                 {
                     return T.Precio;
                 }
