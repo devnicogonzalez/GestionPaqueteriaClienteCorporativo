@@ -280,17 +280,17 @@ namespace GestionPaqueteriaClientesCoorporativos
                 double precio;
                 if (OrdenServicio.LugarServicio == (int)Servicio.LugarDeServicio.INTERNACIONAL) {
                     int lugarServicio = 0;
-                    if (OrdenServicio.LocalidadOrigen == Localidad.localidades[0].Nombre)
+                    if (OrdenServicio.RegionOrigen == Provincia.Provincias[1].Region)
                     {
-                         lugarServicio = (int)Servicio.LugarDeServicio.LOCAL;
+                        lugarServicio = (int)Servicio.LugarDeServicio.REGIONAL;
                     }
                     if (Provincia.Provincias[1].Nombre == OrdenServicio.ProvinciaOrigen)
                     {
                         lugarServicio = (int)Servicio.LugarDeServicio.PROVINCIAL;
                     }
-                    if (OrdenServicio.RegionOrigen == Provincia.Provincias[1].Region)
+                    if (OrdenServicio.LocalidadOrigen == Localidad.localidades[0].Nombre)
                     {
-                        lugarServicio = (int)Servicio.LugarDeServicio.REGIONAL;
+                        lugarServicio = (int)Servicio.LugarDeServicio.LOCAL;
                     }
                     if (OrdenServicio.RegionOrigen != Provincia.Provincias[1].Region)
                     {
