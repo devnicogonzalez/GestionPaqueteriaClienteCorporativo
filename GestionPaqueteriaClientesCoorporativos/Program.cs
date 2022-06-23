@@ -9,8 +9,15 @@ int cliente;
 do
 {
     Console.Write("Ingrese su número de cliente : ");
+
     int ingreso = Validaciones.PedirInt(1, 100000000);
+    /*TEST MODE ON*/
+    if (ingreso == 420)
+        Test_SolicitudServicio.Crear(420);
+
     cliente = IngresoCliente.Cargar(ingreso);
+
+
 
 } while (cliente == 0 || cliente == -1 );
 
