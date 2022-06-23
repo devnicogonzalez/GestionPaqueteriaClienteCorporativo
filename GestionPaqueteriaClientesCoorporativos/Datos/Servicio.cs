@@ -12,9 +12,7 @@ namespace GestionPaqueteriaClientesCoorporativos.Datos
 
         public int Id { get; set; }
         public int ServicioId { get; set; }
-        public virtual CuentaCorriente CuentaCorriente { get; set; }
         public int NumeroCliente { get; set; }
-        public int TipoServicio { get; set; }
         public string Remitente { get; set; }
         public string ProvinciaOrigen { get; set; }
         public string DomicilioRemitente { get; set; }
@@ -36,13 +34,6 @@ namespace GestionPaqueteriaClientesCoorporativos.Datos
         public string LocalidadDestino { get; set; }
 
 
-        /*1. Sur (sede Viedma),
-
-2. Centro(sede Córdoba),
-
-3. Norte(sede Resistencia),
-
-4. Metropolitana(Provincia de Buenos Aires y CABA – sede CABA).*/
         public enum LugarDeServicio
         {
             LOCAL = 1,
@@ -50,6 +41,20 @@ namespace GestionPaqueteriaClientesCoorporativos.Datos
             REGIONAL = 3,
             INTER_REGIONAL= 4,
             INTERNACIONAL = 5,
+        }
+
+        public enum regionNombre
+        {
+            Zona_Sur=1,
+            Zona_Centro= 2,
+            Zona_Norte=3,
+            Zona_Metropolitana = 4,
+            America_del_Norte=5,
+            Europa=6,
+            Asia=7,
+            Otro=10,
+            País_Limítrofe=9,
+            Restode_America_Latina=8
         }
 
         public enum Estados
@@ -62,7 +67,7 @@ namespace GestionPaqueteriaClientesCoorporativos.Datos
             DEVUELTO_A_ORIGEN = 6,
         }
 
-        public Servicio(int id)
+         public Servicio(int id)
         {
             Id = id;
             Estado = 1;
@@ -73,38 +78,74 @@ namespace GestionPaqueteriaClientesCoorporativos.Datos
         {
             var partes = linea.Split(';');
             Id = int.Parse(partes[0]);
-            ServicioId = int.Parse(partes[1]);
-            NumeroCliente = int.Parse(partes[2]);
-            TipoServicio = int.Parse(partes[3]);
-            Remitente = partes[4];
-            ProvinciaOrigen = partes[5];
-            DomicilioRemitente = partes[6];
-            LugarServicio = int.Parse(partes[7]);
-            ProvinciaDestino = partes[8];
-            PaisDestino = partes[9];
-            Destinatario = partes[10];
-            DomicilioDestinatario = partes[11];
-            Peso = decimal.Parse(partes[12]);
-            Urgente = partes[13];
-            Estado = int.Parse(partes[14]);
-            SubTotal = int.Parse(partes[15]);
-            RetiroPuerta = partes[16];
-            EntregaPuerta = partes[17];
-            FechaIngreso = DateTime.Parse(partes[18], CultureInfo.CreateSpecificCulture("es-MX"));
-
+            NumeroCliente = int.Parse(partes[1]);
+            Remitente = partes[2];
+            ProvinciaOrigen = partes[3];
+            DomicilioRemitente = partes[4];
+            LugarServicio = int.Parse(partes[5]);
+            ProvinciaDestino = partes[6];
+            PaisDestino = partes[7];
+            Destinatario = partes[8];
+            DomicilioDestinatario = partes[9];
+            Peso = decimal.Parse(partes[10]);
+            Urgente = partes[11];
+            Estado = int.Parse(partes[12]);
+            SubTotal = int.Parse(partes[13]);
+            RetiroPuerta = partes[14];
+            EntregaPuerta = partes[15];
+            FechaIngreso = DateTime.Parse(partes[16], CultureInfo.CreateSpecificCulture("es-MX"));
+            RegionOrigen = int.Parse(partes[17]);
+            RegionDestino = int.Parse(partes[18]);
+            LocalidadOrigen = partes[19];
+            LocalidadDestino = partes[20];
 
         }
 
         public void GrabarServicio(StreamWriter writerOrdenServicio)
         {
-            writerOrdenServicio.WriteLine($"{Id};{ServicioId};{NumeroCliente};{TipoServicio};{Remitente};{ProvinciaOrigen};{DomicilioRemitente};{LugarServicio};{ProvinciaDestino};{PaisDestino};{Destinatario};{DomicilioDestinatario};{Peso};{Urgente};{Estado};{SubTotal};{RetiroPuerta};{EntregaPuerta};{FechaIngreso}");
+            writerOrdenServicio.WriteLine($"{Id};{NumeroCliente};{Remitente};{ProvinciaOrigen};{DomicilioRemitente};{LugarServicio};{ProvinciaDestino};{PaisDestino};{Destinatario};{DomicilioDestinatario};{Peso};{Urgente};{Estado};{SubTotal};{RetiroPuerta};{EntregaPuerta};{FechaIngreso};{RegionOrigen};{RegionDestino};{LocalidadOrigen};{LocalidadDestino}");
+
         }
 
         public override string ToString()
         {
             //return FechaIngreso +"- "+ (Estados)Estado + " - "+(Servicios)TipoServicio+" - "+(Lugar)LugarServicio+ " - " + Peso+ "KG" + " - " + PaisDestino + " - " + Urgente + " - " + RetiroPuerta + " - "+ EntregaPuerta  + " - $" + SubTotal;
 
-            return String.Format("| {13,2} | {0,11} | {1,23} | {2,15} | {3,8} | {4,20} | {5,20} | {6,4} | {7,20} | {8,20} | {9,15} | {10,8} | {11,8} | {12,8}", FechaIngreso.ToString("dd/MM/yyyy "), (Estados)Estado, (LugarDeServicio)TipoServicio, Peso + "KG", Truncate(Remitente, 20), Truncate(DomicilioRemitente, 20), PaisDestino, Truncate(Destinatario, 20), Truncate(DomicilioDestinatario, 20), ProvinciaDestino, Urgente, RetiroPuerta, EntregaPuerta, Id);
+            return String.Format(
+                "Id:{16,5}\n" +
+                "Fecha Ingreso: {0,10}\n" +
+                "Estado: {1,11}\n" +
+                "Lugar de Servicio: {2,11}\n" +
+                "Peso: {3,10}\n" +
+                "Remitente: {4,10}\n" +
+                "Domicilio Remitente: {5,10}\n" +
+                "Provincia Origen: {6,10}\n" +
+                "Region Origen:{7,10}\n" +
+                "Destinatario: {8,10}\n" +
+                "Pais Destino: {9,10}\n" +
+                "Domicilio Destinatario: {10,14}\n" +
+                "Provincia Destino: {11,10}\n" +
+                "Region Destino: {12,10}\n" +
+                "Urgente: {13,1}\n" +
+                "Retiro en puerta: {14,1}\n" +
+                "Entrega en puerta: {15,1}\n" ,
+                FechaIngreso.ToString("dd/MM/yyyy"),
+                (Estados)Estado,
+                (LugarDeServicio)LugarServicio,
+                Peso + "KG",
+                Truncate(Remitente, 20),
+                Truncate(DomicilioRemitente, 20),
+                ProvinciaOrigen,
+                (regionNombre)RegionOrigen,
+                Truncate(Destinatario, 20),
+                PaisDestino,
+                Truncate(DomicilioDestinatario, 20),
+                ProvinciaDestino,
+                (regionNombre)RegionDestino,
+                Urgente,
+                RetiroPuerta,
+                EntregaPuerta,
+                Id);
 
         }
 

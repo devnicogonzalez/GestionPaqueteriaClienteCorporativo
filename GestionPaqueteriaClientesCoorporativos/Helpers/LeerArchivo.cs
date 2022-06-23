@@ -20,13 +20,14 @@ namespace GestionPaqueteriaClientesCoorporativos.Helpers
                     {
                         var linea = reader.ReadLine();
                         var partes = linea.Split(';');
-                        CuentaCorriente.ListaCuentaCorriente.Add(new CuentaCorriente(linea));
+                        CuentaCorriente cuenta = (new CuentaCorriente(linea));
                         if (EstadoCuenta.CuentaCorriente.TryGetValue(int.Parse(partes[2]), out List<CuentaCorriente> result))
                         {
-                            result.Add(new CuentaCorriente(linea));
+                            result.Add(cuenta);
                         }
                         else
                         {
+                            CuentaCorriente.ListaCuentaCorriente.Add(cuenta);
                             EstadoCuenta.CuentaCorriente.Add(int.Parse(partes[2]), CuentaCorriente.ListaCuentaCorriente);
                         }
                         Console.Write(".");
@@ -55,15 +56,16 @@ namespace GestionPaqueteriaClientesCoorporativos.Helpers
                     {
                         var linea = reader.ReadLine();
                         var partes = linea.Split(';');
-                        Servicio.serviciosLista.Add(new Servicio(linea));
+                        Servicio servicio = new Servicio(linea);
 
-                        if (EstadoServicio.Servicios.TryGetValue(int.Parse(partes[2]), out List<Servicio> result))
+                        if (EstadoServicio.Servicios.TryGetValue(int.Parse(partes[1]), out List<Servicio> result))
                         {
-                            result.Add(new Servicio(linea));
+                            result.Add(servicio);
                         }
                         else
                         {
-                            EstadoServicio.Servicios.Add(int.Parse(partes[2]), Servicio.serviciosLista);
+                            Servicio.serviciosLista.Add(servicio);
+                            EstadoServicio.Servicios.Add(int.Parse(partes[1]), Servicio.serviciosLista);
 
                         }
 

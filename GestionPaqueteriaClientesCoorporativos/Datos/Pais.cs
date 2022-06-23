@@ -12,7 +12,7 @@ namespace GestionPaqueteriaClientesCoorporativos.Datos
         public string NombreUS { get; private set; }
         public string NombreES { get; private set; }
         public string NombreISO { get; private set; }
-        public double PrecioKG { get; private set; }
+        public int RegionInternacional { get; private set; }
 
 
         public Pais(string linea)
@@ -21,7 +21,7 @@ namespace GestionPaqueteriaClientesCoorporativos.Datos
             NombreUS = partes[0];
             NombreES = partes[1];
             NombreISO = partes[2];
-            PrecioKG = double.Parse(partes[3]);
+            RegionInternacional = int.Parse(partes[3]);
         }
 
 

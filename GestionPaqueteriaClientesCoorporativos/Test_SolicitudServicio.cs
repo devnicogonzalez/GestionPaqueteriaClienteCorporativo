@@ -4,13 +4,13 @@ using GestionPaqueteriaClientesCoorporativos.Helpers;
 
 namespace GestionPaqueteriaClientesCoorporativos
 {
-	public class SolicitudServicio
-	{
+    public class Test_SolicitudServicio
+    {
 
         public static void Crear(int cliente)
         {
             Console.WriteLine("SOLICITAR UN NUEVO SERVICIO");
-  
+
 
             int numeroServicio = 1;
             string salir;
@@ -25,11 +25,11 @@ namespace GestionPaqueteriaClientesCoorporativos
                 Servicio OrdenServicio = new Servicio(Servicio.serviciosLista.Count + numeroServicio);
 
                 OrdenServicio.NumeroCliente = cliente;
-               
+
                 Console.WriteLine("Ingrese el peso del bulto, hasta 30kg");
                 decimal kilogramo = Validaciones.PedirDecimal(0, 30);
                 OrdenServicio.Peso = kilogramo;
-                
+
 
                 if (OrdenServicio.Peso >= 0 && OrdenServicio.Peso <= (decimal)0.500)
                 {
@@ -46,16 +46,16 @@ namespace GestionPaqueteriaClientesCoorporativos
                     pesoAuxiliar = (decimal)Tarifario.ObtenerLimitesDePeso.OpcionHasta20kg;
                 }
 
-                if (OrdenServicio.Peso > (decimal)Tarifario.ObtenerLimitesDePeso.OpcionHasta20kg && OrdenServicio.Peso <= (decimal)Tarifario.ObtenerLimitesDePeso.OpcionHasta30kg )
+                if (OrdenServicio.Peso > (decimal)Tarifario.ObtenerLimitesDePeso.OpcionHasta20kg && OrdenServicio.Peso <= (decimal)Tarifario.ObtenerLimitesDePeso.OpcionHasta30kg)
                 {
                     pesoAuxiliar = (decimal)Tarifario.ObtenerLimitesDePeso.OpcionHasta30kg;
                 }
 
-                if(pesoAuxiliar == 0)
+                if (pesoAuxiliar == 0)
                 {
-                    Console.WriteLine($"NO FUE POSIBLE DEFINIR RANGO DE PRECIO "+ OrdenServicio.Peso);
+                    Console.WriteLine($"NO FUE POSIBLE DEFINIR RANGO DE PRECIO " + OrdenServicio.Peso);
                 }
-     
+                /*
                Console.WriteLine("Seleccione la Provincia o Distrito Federal, desde donde enviara la correspondencia");
 
                foreach (var item in Provincia.Provincias)
@@ -111,7 +111,7 @@ namespace GestionPaqueteriaClientesCoorporativos
                    if (existePais)
                    {
                        OrdenServicio.PaisDestino = PaisSeleccionado.NombreISO;
-                       OrdenServicio.RegionDestino = PaisSeleccionado.RegionInternacional;
+                     //  OrdenServicio.RegionDestino = PaisSeleccionado.Region;
 
                    }
                    else
@@ -188,8 +188,38 @@ namespace GestionPaqueteriaClientesCoorporativos
                else
                {
                    OrdenServicio.LugarServicio = (int)Servicio.LugarDeServicio.INTERNACIONAL;
+                       Console.WriteLine("Seleccione Region");
+                       Console.WriteLine("1.Países limítrofes");
+                       Console.WriteLine("2.Resto de América Latina");
+                       Console.WriteLine("3.América del Norte");
+                       Console.WriteLine("4.Europa");
+                       Console.WriteLine("5.Asia");
+                       Console.WriteLine("6.Otro");
+                       int lugServicion = Validaciones.PedirInt(1, 5);
 
-               }
+                       switch (lugServicion)
+                       {
+                           case 1:
+                               OrdenServicio.RegionDestino = (int)Region.regionNombre.Limitrofe;
+                               break;
+                           case 2:
+                               OrdenServicio.RegionDestino = (int)Region.regionNombre.America_Norte;
+                               break;
+                           case 3:
+                               OrdenServicio.RegionDestino = (int)Region.regionNombre.Europa;
+                               break;
+                           case 4:
+                               OrdenServicio.RegionDestino = (int)Region.regionNombre.Asia;
+                               break;
+                           case 5:
+                               OrdenServicio.RegionDestino = (int)Region.regionNombre.Otro;
+                               Console.WriteLine("Los destinos fuera de esta clasificación son negociados directamente por la gerencia de Productos y Marketing, por lo que no cuentan con un cuadro tarifario específico.");
+                               break;
+                           default:
+                               Console.WriteLine("Operación inválida.");
+                               break;
+                       }
+                   }
 
                Console.WriteLine("Ingrese el remitente:");
                OrdenServicio.Remitente = Validaciones.PedirStrNoVac();
@@ -219,41 +249,28 @@ namespace GestionPaqueteriaClientesCoorporativos
                {
                    OrdenServicio.Urgente = "S";
                }
-               else
-               {
-                   OrdenServicio.Urgente = "N";
 
-               }
-
-                if (adicionales.Contains(2))
+               if (adicionales.Contains(2))
                {
                    OrdenServicio.RetiroPuerta = "S";
-                }
-                else
-                {
-                    OrdenServicio.RetiroPuerta = "N";
+               }
 
-                }
-
-                if (adicionales.Contains(3))
-                {
+               if (adicionales.Contains(3))
+               {
                    OrdenServicio.EntregaPuerta = "S";
-                }
-                else
-                {
-                    OrdenServicio.EntregaPuerta = "N";
-                }
+               }
 
 
 
+               */
 
 
-                /*TEST
+                /*TEST*/
 
                 //LOCAL 10KG
                 List<int> adicionales = new List<int>();
                 adicionales.Add(1);//urgente
-                OrdenServicio.NumeroCliente = 33556555;	
+                OrdenServicio.NumeroCliente = 33556555;
                 OrdenServicio.Remitente = "test2 de remitente";
                 OrdenServicio.ProvinciaOrigen = "Misiones";
                 OrdenServicio.DomicilioRemitente = "prueba domicilio de prueba 1900";
@@ -266,20 +283,26 @@ namespace GestionPaqueteriaClientesCoorporativos
                 OrdenServicio.RetiroPuerta = "N";
                 OrdenServicio.EntregaPuerta = "N";
                 OrdenServicio.RegionDestino = 1;
-                OrdenServicio.RegionOrigen =3;
+                OrdenServicio.RegionOrigen = 3;
                 OrdenServicio.LocalidadDestino = "Test";
                 OrdenServicio.LocalidadOrigen = "Test";
-                FIN TEST*/
+                /*FIN TEST*/
+
+
+
+
+
 
                 double precioAdicional = ServicioAdicional.Calcular(adicionales);
 
 
                 Double precio;
-                if (OrdenServicio.LugarServicio == (int)Servicio.LugarDeServicio.INTERNACIONAL) {
-                    int lugarServicio = 0;
-                    if (OrdenServicio.LocalidadOrigen == Localidad.localidades[0].Nombre)
+                int lugarServicio = 0;
+                if (OrdenServicio.LugarServicio > 4)
+                {
+                    if (OrdenServicio.LocalidadOrigen == Localidad.localidades[1].Nombre)
                     {
-                         lugarServicio = (int)Servicio.LugarDeServicio.LOCAL;
+                        lugarServicio = (int)Servicio.LugarDeServicio.LOCAL;
                     }
                     if (Provincia.Provincias[1].Nombre == OrdenServicio.ProvinciaOrigen)
                     {
@@ -293,11 +316,10 @@ namespace GestionPaqueteriaClientesCoorporativos
                     {
                         lugarServicio = (int)Servicio.LugarDeServicio.INTER_REGIONAL;
                     }
-                    double precioACaba = Tarifario.Tarifar(lugarServicio, pesoAuxiliar);
-                    double precioInternacional = Tarifario.TarifarInternacional(OrdenServicio.RegionDestino, pesoAuxiliar);
-                    double precioCompleto = precioACaba + precioInternacional + precioAdicional;
+                    Double precioACaba = Tarifario.Tarifar(lugarServicio, pesoAuxiliar);
+                    Double precioInternacional = Tarifario.TarifarInternacional(OrdenServicio.RegionDestino, pesoAuxiliar);
+                    Double precioCompleto = precioACaba + precioInternacional + precioAdicional;
                     precio = precioCompleto;
-                    OrdenServicio.SubTotal = precio;
                 }
                 else
                 {
@@ -354,9 +376,9 @@ namespace GestionPaqueteriaClientesCoorporativos
 
             } while (salir == "S");
             //almaceno servicio
-                     Console.Clear();
+            Console.Clear();
             // MUESTRA DETALLE DE LA ULTIMAS ORDENES EN PANTALLA
-           
+
             Console.WriteLine("Últimas ordenes cargadas:");
 
             foreach (Servicio item in Servicio.serviciosLista)
@@ -371,7 +393,7 @@ namespace GestionPaqueteriaClientesCoorporativos
 
 
 
-           
+
 
             Console.WriteLine("Presione una tecla para volver al menu principal...");
             Console.ReadKey();

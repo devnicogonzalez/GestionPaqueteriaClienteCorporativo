@@ -35,11 +35,16 @@ namespace GestionPaqueteriaClientesCoorporativos.Datos
 
         public enum regionNombre
         {
-            America_Norte = 5,
+            Zona_Sur = 1,
+            Zona_Centro = 2,
+            Zona_Norte = 3,
+            Zona_Metropolitana = 4,
+            America_del_Norte = 5,
             Europa = 6,
             Asia = 7,
-            Otro = 8,
-            Limitrofe = 9
+            Otro = 10,
+            País_Limítrofe = 9,
+            Restode_America_Latina = 8
         }
 
         public enum ObtenerDivisionesAdministrativas
@@ -87,7 +92,7 @@ namespace GestionPaqueteriaClientesCoorporativos.Datos
         {
             foreach (Tarifario T in Lista)
             {
-                if (T.Peso == Peso && T.Region == (int)regionNombre.America_Norte)
+                if (T.Peso == Peso && T.Region == (int)regionNombre.America_del_Norte)
                 {
                     return T.Precio;
                 }
@@ -107,7 +112,7 @@ namespace GestionPaqueteriaClientesCoorporativos.Datos
                     return T.Precio;
                 }
 
-                if (T.Peso == Peso && T.Region == (int)regionNombre.Limitrofe)
+                if (T.Peso == Peso && T.Region == (int)regionNombre.País_Limítrofe)
                 {
                     return T.Precio;
                 }

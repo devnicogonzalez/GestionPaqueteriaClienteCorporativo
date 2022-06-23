@@ -6,30 +6,30 @@ namespace GestionPaqueteriaClientesCoorporativos.Helpers
     internal class GrabarArchivo
     {
 
-        internal static void Iniciar()
+        public static void Iniciar()
         {
 
             
-            using StreamWriter writerOrdenServicio = new StreamWriter("CuentaCorriente.txt");
+            using StreamWriter writerCuentaCorriente = new StreamWriter("CuentasCorrientes.txt");
 
-            foreach (KeyValuePair<int, List<CuentaCorriente>> entry in EstadoCuenta.CuentaCorriente)
-            {
-                foreach (CuentaCorriente cuentaCorriente in entry.Value)
+
+                foreach (CuentaCorriente cuentaCorriente in CuentaCorriente.ListaCuentaCorriente)
                 {
-
-                    cuentaCorriente.GrabarCuentaCorriente(writerOrdenServicio);
+                    cuentaCorriente.GrabarCuentaCorriente(writerCuentaCorriente);
                 }
-            }
+        
+
+
+            
 
             using StreamWriter writerServicio = new StreamWriter("Servicios.txt");
 
-            foreach (KeyValuePair<int, List<Servicio>> entry in EstadoServicio.Servicios)
-            {
-                foreach (Servicio serv in entry.Value)
+
+                foreach (Servicio serv in Servicio.serviciosLista)
                 {
                     serv.GrabarServicio(writerServicio);
                 }
-            }
+          
 
         }
     }

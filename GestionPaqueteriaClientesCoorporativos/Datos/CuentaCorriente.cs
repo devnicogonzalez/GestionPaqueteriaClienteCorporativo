@@ -41,10 +41,10 @@ namespace GestionPaqueteriaClientesCoorporativos.Datos
             return String.Format("|{0,19} | {1,10} | {2,10} |", FechaAlta, (Estados)EstadoPago, "$" + Total);
         }
 
-     //   public double ObtenerTotalServicio()
-       // {
-           // return CuentaCorriente.ListaCuentaCorriente.Sum(t => t.SubTotal);
-        //}
+        public static double ObtenerTotalServicio()
+       {
+            return CuentaCorriente.ListaCuentaCorriente.Sum(t => t.Total);
+        }
 
         public void GrabarCuentaCorriente(StreamWriter writerServicio)
         {
