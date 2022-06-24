@@ -3,7 +3,7 @@ using GestionPaqueteriaClientesCoorporativos;
 using GestionPaqueteriaClientesCoorporativos.Helpers;
 
 LeerArchivo.Iniciar();
-//Console.Clear();
+Console.Clear();
 CultureInfo.CurrentCulture = new CultureInfo("es-MX", true);
 int cliente;
 do
