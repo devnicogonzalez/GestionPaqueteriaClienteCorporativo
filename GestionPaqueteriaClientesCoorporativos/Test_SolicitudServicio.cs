@@ -122,7 +122,7 @@ namespace GestionPaqueteriaClientesCoorporativos
                     {
                         Console.WriteLine($" '{ingresoPaisDestino}' , no es un país válido.");
                         OrdenServicio.PaisDestino = "NULL";
-                        OrdenServicio.ProvinciaDestino = "NULL";
+                        OrdenServicio.ProvinciaDestino = "";
                         intentos++;
                     }
                     //PROVISORIO DESPUES QUE POR 4 VECES NO ENCONTRARON PAIS DEJO SEGUIR CON CAMPOS EN NULL

@@ -121,7 +121,7 @@ namespace GestionPaqueteriaClientesCoorporativos
                    {
                        Console.WriteLine($" '{ingresoPaisDestino}' , no es un país válido.");
                        OrdenServicio.PaisDestino = "NULL";
-                       OrdenServicio.ProvinciaDestino = "NULL";
+                       OrdenServicio.ProvinciaDestino = "";
                        intentos++;
                    }
                    //PROVISORIO DESPUES QUE POR 4 VECES NO ENCONTRARON PAIS DEJO SEGUIR CON CAMPOS EN NULL
@@ -227,7 +227,6 @@ namespace GestionPaqueteriaClientesCoorporativos
                    OrdenServicio.Urgente = "N";
 
                }
-
                 if (adicionales.Contains(2))
                {
                    OrdenServicio.RetiroPuerta = "S";
@@ -247,32 +246,6 @@ namespace GestionPaqueteriaClientesCoorporativos
                     OrdenServicio.EntregaPuerta = "N";
                 }
 
-
-
-
-
-                /*TEST
-
-                //LOCAL 10KG
-                List<int> adicionales = new List<int>();
-                adicionales.Add(1);//urgente
-                OrdenServicio.NumeroCliente = 33556555;	
-                OrdenServicio.Remitente = "test2 de remitente";
-                OrdenServicio.ProvinciaOrigen = "Misiones";
-                OrdenServicio.DomicilioRemitente = "prueba domicilio de prueba 1900";
-                OrdenServicio.LugarServicio = 1;
-                OrdenServicio.ProvinciaDestino = "Chubut";
-                OrdenServicio.PaisDestino = "AR";
-                OrdenServicio.Destinatario = "Destinatario de Test2";
-                OrdenServicio.DomicilioDestinatario = "Domicilio Destinatario de Test2";
-                OrdenServicio.Urgente = "S";
-                OrdenServicio.RetiroPuerta = "N";
-                OrdenServicio.EntregaPuerta = "N";
-                OrdenServicio.RegionDestino = 1;
-                OrdenServicio.RegionOrigen =3;
-                OrdenServicio.LocalidadDestino = "Test";
-                OrdenServicio.LocalidadOrigen = "Test";
-                FIN TEST*/
 
                 double precioAdicional = ServicioAdicional.Calcular(adicionales);
 

@@ -11,10 +11,10 @@ do
     Console.Write("Ingrese su número de cliente : ");
 
     int ingreso = Validaciones.PedirInt(1, 100000000);
-    /*TEST MODE ON*/
+    /*TEST MODE OFF
     if (ingreso == 420)
         Test_SolicitudServicio.Crear(420);
-
+    */
     cliente = IngresoCliente.Cargar(ingreso);
 
 
