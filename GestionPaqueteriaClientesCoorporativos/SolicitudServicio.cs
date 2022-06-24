@@ -157,7 +157,7 @@ namespace GestionPaqueteriaClientesCoorporativos
 
                        if (dictLoc[NumeroLocalidadDestino].NumeroProvincia == provinciaDestino)
                        {
-                           OrdenServicio.LocalidadDestino = Localidad.localidades[NumeroLocalidadDestino].Nombre;
+                           OrdenServicio.LocalidadDestino = dictLoc[NumeroLocalidadDestino].Nombre;
                        }
                        else
                        {
